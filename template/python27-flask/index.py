@@ -3,6 +3,7 @@
 
 from flask import Flask, request
 from function import handler
+from gevent.pywsgi import WSGIServer
 
 app = Flask(__name__)
 
@@ -11,5 +12,7 @@ def main_route():
     ret = handler.handle(request.get_data())
     return ret
 
+app.debug = False
+
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=False)
+    WSGIServer(('0.0.0.0', 5000), app)
