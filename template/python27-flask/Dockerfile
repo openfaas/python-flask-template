@@ -5,9 +5,7 @@ RUN apk --no-cache add curl \
     && echo "Pulling watchdog binary from Github." \
     && curl -sSLf https://github.com/openfaas-incubator/of-watchdog/releases/download/0.2.1/of-watchdog > /usr/bin/fwatchdog \
     && chmod +x /usr/bin/fwatchdog \
-    && apk del curl --no-cache \
-    && apk add --no-cache gcc \
-    && apk add --no-cache musl-dev
+    && apk del curl --no-cache
 
 WORKDIR /root/
 
