@@ -1,13 +1,22 @@
-# python27-flask-template
-Python 2.7 OpenFaaS template with Flask
+# python-flask-template
 
-To try this out:
+Python OpenFaaS template with Flask
+
+To try this out with either Python 2.7 or Python 3.6:
 
 ```bash
-faas template pull https://github.com/alexellis/python27-flask-template
-faas new --lang python27-flask myfunction
-mv myfunction.yml stack.yml
+faas template pull https://github.com/openfaas-incubator/python-flask-template
+faas new --list
+Languages available as templates:
+- python27-flask
+- python3-flask
+```
 
+Generate a function with one of the languages:
+
+```bash
+faas new --lang python3-flask myfunction
+mv myfunction.yml stack.yml
 ```
 
 Followed by the usual flow:
