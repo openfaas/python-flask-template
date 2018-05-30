@@ -7,6 +7,8 @@ RUN apk --no-cache add curl \
     && chmod +x /usr/bin/fwatchdog \
     && apk del curl --no-cache
 
+RUN apk --no-cache add musl-dev gcc make
+
 WORKDIR /root/
 
 COPY requirements.txt   .
@@ -23,6 +25,7 @@ WORKDIR /root/
 COPY function           function
 
 ENV fprocess="python index.py"
+
 ENV cgi_headers="true"
 ENV mode="http"
 ENV upstream_url="http://127.0.0.1:5000"
