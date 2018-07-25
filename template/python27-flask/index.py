@@ -6,7 +6,8 @@ from function import handler
 
 app = Flask(__name__)
 
-@app.route("/", methods=["POST", "GET"])
+@app.route("/", defaults={"path": ""}, methods=["POST", "GET"])
+@app.route("/<path:path>", methods=["POST", "GET"])
 def main_route():
     ret = handler.handle(request.get_data())
     return ret
