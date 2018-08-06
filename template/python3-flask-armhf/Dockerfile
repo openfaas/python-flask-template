@@ -1,9 +1,11 @@
 FROM armhf/python:3.6-alpine
 
+ARG ADDITIONAL_PACKAGE
+ARG OF_WATCHDOG_VERSION=0.2.5
 # Alternatively use ADD https:// (which will not be cached by Docker builder)
-RUN apk --no-cache add curl \
+RUN apk --no-cache add curl ${ADDITIONAL_PACKAGE} \
     && echo "Pulling watchdog binary from Github." \
-    && curl -sSLf https://github.com/openfaas-incubator/of-watchdog/releases/download/0.2.4/of-watchdog-armhf > /usr/bin/fwatchdog \
+    && curl -sSLf https://github.com/openfaas-incubator/of-watchdog/releases/download/$OF_WATCHDOG_VERSION/of-watchdog > /usr/bin/fwatchdog \
     && chmod +x /usr/bin/fwatchdog \
     && apk del curl --no-cache
 
