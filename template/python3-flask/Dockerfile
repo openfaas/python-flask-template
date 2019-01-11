@@ -7,7 +7,7 @@ RUN apk --no-cache add curl \
     && chmod +x /usr/bin/fwatchdog \
     && apk del curl --no-cache
 
-RUN apk --no-cache add musl-dev gcc make
+RUN apk --no-cache add musl-dev gcc make libffi-dev
 
 WORKDIR /root/
 
