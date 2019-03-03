@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 from flask import Flask, request, jsonify
 from waitress import serve
 import os
