@@ -1,17 +1,16 @@
 OpenFaaS Python Flask Templates
 =============================================
 
-The Python Flask templates make use of the incubator project [of-watchdog](https://github.com/openfaas-incubator/of-watchdog) to handle higher throughput than the [classic watchdog](https://github.com/openfaas/faas/tree/master/watchdog) due to the process being kept warm.
+The Python Flask templates that make use of the incubator project [of-watchdog](https://github.com/openfaas-incubator/of-watchdog).
 
-Templates available under this repository:
+Templates available in this repository:
 - python27-flask
 - python3-flask
 - python3-flask-armhf
-- python3-http*
-- python3-http-armhf*
+- python3-http
+- python3-http-armhf
 
-Notes: 
-- The templates listed with an asterik are the only ones that support additional control over the HTTP response and provide access to HTTP request details.
+Notes:
 - To build and deploy a function for Raspberry Pi or ARMv7 in general, use the language templates ending in *-armhf*
 
 ## Downloading the templates
@@ -65,12 +64,12 @@ The function handler is passed two arguments, *event* and *context*.
 - hostname
 
 ## Response Bodies
-By default, flask will automatically attempt to set the correct Content-Type header for you based on the type of response. 
+By default, the template will automatically attempt to set the correct Content-Type header for you based on the type of response. 
 
 For example, returning a dict object type will automatically attach the header `Content-Type: application/json` and returning a string type will automatically attach the `Content-Type: text/html, charset=utf-8` for you.
 
 ## Example usage
-### Custom Status Codes and Response Bodies
+### Custom status codes and response bodies
 Successful response status code and JSON response body
 ```python
 def handle(event, context):
