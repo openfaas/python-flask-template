@@ -56,7 +56,7 @@ def format_response(resp):
     return (body, statusCode, headers)
 
 @app.route('/', defaults={'path': ''}, methods=['GET', 'PUT', 'POST', 'PATCH', 'DELETE'])
-@app.route('/<path:path>', methods=['GET', 'PUT', 'POST', 'PATCH' 'DELETE'])
+@app.route('/<path:path>', methods=['GET', 'PUT', 'POST', 'PATCH', 'DELETE'])
 def call_handler(path):
     event = Event()
     context = Context()
