@@ -9,20 +9,34 @@ RUN apk --no-cache add curl \
 
 RUN apk --no-cache add musl-dev gcc make openssl-dev libffi-dev
 
-WORKDIR /root/
+# Add non root user
+RUN addgroup -S app && adduser app -S -G app
+RUN chown app /home/app
 
-COPY requirements.txt   .
-RUN pip install -r requirements.txt
+USER app
+
+ENV PATH=$PATH:/home/app/.local/bin
+
+WORKDIR /home/app/
+
 COPY index.py           .
+COPY requirements.txt   .
+USER root
+RUN pip install -r requirements.txt
+USER app
 
 RUN mkdir -p function
 RUN touch ./function/__init__.py
-WORKDIR /root/function/
+WORKDIR /home/app/function/
 COPY function/requirements.txt	.
-RUN pip install -r requirements.txt
+RUN pip install --user -r requirements.txt
 
-WORKDIR /root/
-COPY function           function
+WORKDIR /home/app/
+
+USER root
+COPY function   function
+RUN chown -R app:app ./
+USER app
 
 ENV fprocess="python index.py"
 
