@@ -1,11 +1,12 @@
+FROM openfaas/of-watchdog:0.5.3 as watchdog
 FROM python:2.7-alpine
 
+COPY --from=watchdog /fwatchdog /usr/bin/fwatchdog
+RUN chmod +x /usr/bin/fwatchdog
+
+ARG ADDITIONAL_PACKAGE
 # Alternatively use ADD https:// (which will not be cached by Docker builder)
-RUN apk --no-cache add curl \
-    && echo "Pulling watchdog binary from Github." \
-    && curl -sSLf https://github.com/openfaas-incubator/of-watchdog/releases/download/0.5.0/of-watchdog > /usr/bin/fwatchdog \
-    && chmod +x /usr/bin/fwatchdog \
-    && apk del curl --no-cache
+RUN apk --no-cache add ${ADDITIONAL_PACKAGE}
 
 WORKDIR /root/
 
