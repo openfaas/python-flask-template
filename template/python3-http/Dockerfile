@@ -6,6 +6,7 @@ RUN chmod +x /usr/bin/fwatchdog
 
 ARG ADDITIONAL_PACKAGE
 # Alternatively use ADD https:// (which will not be cached by Docker builder)
+
 RUN apk --no-cache add ${ADDITIONAL_PACKAGE}
 
 # Add non root user
@@ -22,6 +23,8 @@ COPY index.py           .
 COPY requirements.txt   .
 USER root
 RUN pip install -r requirements.txt
+
+#build function directory and install user specified componenets.
 USER app
 
 RUN mkdir -p function
@@ -32,12 +35,14 @@ RUN pip install --user -r requirements.txt
 
 WORKDIR /home/app/
 
+#install function code
 USER root
 COPY function   function
 RUN chown -R app:app ./
+
+#configure WSGI server and healthcheck
 USER app
 
-# Set up of-watchdog for HTTP mode
 ENV fprocess="python index.py"
 ENV cgi_headers="true"
 ENV mode="http"
