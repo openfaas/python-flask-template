@@ -6,7 +6,8 @@ RUN chmod +x /usr/bin/fwatchdog
 
 ARG ADDITIONAL_PACKAGE
 # Alternatively use ADD https:// (which will not be cached by Docker builder)
-RUN apt-get install ${ADDITIONAL_PACKAGE}
+
+RUN apt-get update && apt-get --assume-yes install musl-dev gcc make ${ADDITIONAL_PACKAGE}
 
 # Add non root user
 RUN addgroup --system app && adduser app --system --ingroup app

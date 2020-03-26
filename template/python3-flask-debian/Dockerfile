@@ -6,19 +6,26 @@ RUN chmod +x /usr/bin/fwatchdog
 
 ARG ADDITIONAL_PACKAGE
 # Alternatively use ADD https:// (which will not be cached by Docker builder)
-RUN apt-get install ${ADDITIONAL_PACKAGE}
 
+RUN apt-get update && apt-get --assume-yes install musl-dev gcc make ${ADDITIONAL_PACKAGE}
 
 # Add non root user
 RUN addgroup --system app && adduser app --system --ingroup app
-#RUN chown app /home/app
+RUN chown app /home/app
+
+USER app
+
+ENV PATH=$PATH:/home/app/.local/bin
 
 WORKDIR /home/app/
 
 COPY index.py           .
 COPY requirements.txt   .
+
 USER root
 RUN pip install -r requirements.txt
+
+#build function directory and install user specified componenets.
 USER app
 
 RUN mkdir -p function
@@ -29,9 +36,13 @@ RUN pip install --user -r requirements.txt
 
 WORKDIR /home/app/
 
+#install function code
 USER root
+
 COPY function   function
 RUN chown -R app:app ./
+
+#configure WSGI server and healthcheck
 USER app
 
 ENV fprocess="python index.py"
