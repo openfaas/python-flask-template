@@ -17,7 +17,7 @@ class Event:
 
 class Context:
     def __init__(self):
-        self.hostname = os.environ['HOSTNAME']
+        self.hostname = os.getenv('HOSTNAME', 'localhost')
 
 def format_status_code(resp):
     if 'statusCode' in resp:
