@@ -1,14 +1,2 @@
-language: python3-http
+language: python3-http-debian
 fprocess: python index.py
-build_options:
-  - name: dev
-    packages: 
-      - make
-      - automake
-      - gcc
-      - g++
-      - subversion
-      - python3-dev
-      - musl-dev
-      - libffi-dev
-      - git
