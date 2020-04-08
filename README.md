@@ -6,8 +6,10 @@ The Python Flask templates that make use of the incubator project [of-watchdog](
 Templates available in this repository:
 - python27-flask
 - python3-flask
+- python3-flask-debian
 - python3-flask-armhf
 - python3-http
+- python3-http-debian
 - python3-http-armhf
 
 Notes:
