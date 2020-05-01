@@ -3,8 +3,7 @@
 
 from flask import Flask, request
 from function import handler
-#from gevent.wsgi import WSGIServer
-from gevent.pywsgi import WSGIServer
+from waitress import serve
 
 app = Flask(__name__)
 
@@ -27,6 +26,4 @@ def main_route(path):
     return ret
 
 if __name__ == '__main__':
-
-    http_server = WSGIServer(('0.0.0.0', 5000), app)
-    http_server.serve_forever()
+    serve(app, host='0.0.0.0', port=5000)

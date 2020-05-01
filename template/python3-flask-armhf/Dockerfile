@@ -1,4 +1,4 @@
-FROM openfaas/of-watchdog:0.7.2 as watchdog
+FROM openfaas/of-watchdog:0.7.7 as watchdog
 FROM armhf/python:3.6-alpine
 
 ARG ADDITIONAL_PACKAGE
@@ -6,7 +6,7 @@ ARG ADDITIONAL_PACKAGE
 COPY --from=watchdog /fwatchdog /usr/bin/fwatchdog
 RUN chmod +x /usr/bin/fwatchdog
 
-RUN apk --no-cache add musl-dev gcc make openssl-dev libffi-dev
+RUN apk --no-cache add openssl-dev ${ADDITIONAL_PACKAGE}
 
 # Add non root user
 RUN addgroup -S app && adduser app -S -G app

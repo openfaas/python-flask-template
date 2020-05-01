@@ -1,4 +1,4 @@
-FROM openfaas/of-watchdog:0.7.2 as watchdog
+FROM openfaas/of-watchdog:0.7.7 as watchdog
 FROM python:3.7-alpine
 
 COPY --from=watchdog /fwatchdog /usr/bin/fwatchdog
@@ -7,7 +7,7 @@ RUN chmod +x /usr/bin/fwatchdog
 ARG ADDITIONAL_PACKAGE
 # Alternatively use ADD https:// (which will not be cached by Docker builder)
 
-RUN apk --no-cache add musl-dev gcc make ${ADDITIONAL_PACKAGE}
+RUN apk --no-cache add openssl-dev ${ADDITIONAL_PACKAGE}
 
 # Add non root user
 RUN addgroup -S app && adduser app -S -G app
