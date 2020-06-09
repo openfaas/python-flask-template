@@ -4,8 +4,13 @@
 from flask import Flask, request
 from function import handler
 from waitress import serve
+import os
 
 app = Flask(__name__)
+
+# distutils.util.strtobool() can throw an exception
+def is_true(val):
+    return len(val) > 0 and val.lower() == "true" or val == "1"
 
 @app.before_request
 def fix_transfer_encoding():
@@ -22,7 +27,14 @@ def fix_transfer_encoding():
 @app.route("/", defaults={"path": ""}, methods=["POST", "GET"])
 @app.route("/<path:path>", methods=["POST", "GET"])
 def main_route(path):
-    ret = handler.handle(request.get_data())
+    raw_body = os.getenv("RAW_BODY")
+
+    as_text = True
+
+    if is_true(raw_body):
+        as_text = False
+    
+    ret = handler.handle(request.get_data(as_text=as_text))
     return ret
 
 if __name__ == '__main__':
