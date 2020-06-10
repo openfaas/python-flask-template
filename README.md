@@ -108,7 +108,7 @@ def handle(req):
     """
 
     # req is bytes, so an input of "hello" returns i.e. b'hello'
-    return string(req)
+    return str(req)
 ```
 
 # Using the python3-http templates
