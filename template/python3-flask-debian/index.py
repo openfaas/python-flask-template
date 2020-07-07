@@ -27,7 +27,7 @@ def fix_transfer_encoding():
 @app.route("/", defaults={"path": ""}, methods=["POST", "GET"])
 @app.route("/<path:path>", methods=["POST", "GET"])
 def main_route(path):
-    raw_body = os.getenv("RAW_BODY")
+    raw_body = os.getenv("RAW_BODY", "false")
 
     as_text = True
 
