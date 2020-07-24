@@ -19,39 +19,50 @@ class Context:
     def __init__(self):
         self.hostname = os.getenv('HOSTNAME', 'localhost')
 
-def format_status_code(resp):
-    if 'statusCode' in resp:
-        return resp['statusCode']
+def format_status_code(res):
+    if 'statusCode' in res:
+        return res['statusCode']
     
     return 200
 
-def format_body(resp):
-    if 'body' not in resp:
-        return ""
-    elif type(resp['body']) == dict:
-        return jsonify(resp['body'])
-    else:
-        return str(resp['body'])
+def format_body(res, content_type):
+    if content_type == 'application/octet-stream':
+        return res['body']
 
-def format_headers(resp):
-    if 'headers' not in resp:
+    if 'body' not in res:
+        return ""
+    elif type(res['body']) == dict:
+        return jsonify(res['body'])
+    else:
+        return str(res['body'])
+
+def format_headers(res):
+    if 'headers' not in res:
         return []
-    elif type(resp['headers']) == dict:
+    elif type(res['headers']) == dict:
         headers = []
-        for key in resp['headers'].keys():
-            header_tuple = (key, resp['headers'][key])
+        for key in res['headers'].keys():
+            header_tuple = (key, res['headers'][key])
             headers.append(header_tuple)
         return headers
     
-    return resp['headers']
+    return res['headers']
 
-def format_response(resp):
-    if resp == None:
+def get_content_type(res):
+    content_type = ""
+    if 'headers' in res:
+        content_type = res['headers'].get('Content-type', '')
+    return content_type
+
+def format_response(res):
+    if res == None:
         return ('', 200)
 
-    statusCode = format_status_code(resp)
-    body = format_body(resp)
-    headers = format_headers(resp)
+    statusCode = format_status_code(res)
+    content_type = get_content_type(res)
+    body = format_body(res, content_type)
+
+    headers = format_headers(res)
 
     return (body, statusCode, headers)
 
@@ -60,10 +71,11 @@ def format_response(resp):
 def call_handler(path):
     event = Event()
     context = Context()
+
     response_data = handler.handle(event, context)
     
-    resp = format_response(response_data)
-    return resp
+    res = format_response(response_data)
+    return res
 
 if __name__ == '__main__':
     serve(app, host='0.0.0.0', port=5000)
