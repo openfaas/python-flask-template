@@ -238,7 +238,7 @@ def handle(event, context):
     return {
         "statusCode": 200,
         "body": {
-            "content-type-received": event.headers['Content-Type']
+            "content-type-received": event.headers.get('Content-Type')
         }
     }
 ```
