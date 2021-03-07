@@ -34,13 +34,14 @@ WORKDIR /home/app/function/
 COPY function/requirements.txt	.
 RUN pip install --user -r requirements.txt
 
-WORKDIR /home/app/
-
 #install function code
 USER root
 
-COPY function   function
-RUN chown -R app:app ./
+COPY function/   .
+RUN chown -R app:app ../
+RUN  tox -l == 0 && tox
+
+WORKDIR /home/app/
 
 #configure WSGI server and healthcheck
 USER app
