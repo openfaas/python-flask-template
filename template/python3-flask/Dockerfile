@@ -25,7 +25,7 @@ COPY requirements.txt   .
 USER root
 RUN pip install -r requirements.txt
 
-#build function directory and install user specified componenets.
+# Build the function directory and install any user-specified components
 USER app
 
 RUN mkdir -p function
