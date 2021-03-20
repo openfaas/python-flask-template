@@ -39,7 +39,13 @@ USER root
 
 COPY function/   .
 RUN chown -R app:app ../
-RUN  tox -l == 0 && tox
+
+ARG TEST_COMMAND=tox
+RUN if [ "x$TEST_COMMAND" = "xoff" ]; then \
+    echo "skipping tests";\
+    else \
+    eval "$TEST_COMMAND"; \
+    fi
 
 WORKDIR /home/app/
 
