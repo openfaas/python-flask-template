@@ -35,6 +35,15 @@ WORKDIR /home/app/
 USER root
 COPY function   function
 RUN chown -R app:app ./
+
+ARG TEST_COMMAND=tox
+ARG TEST_ENABLED=true
+RUN if [ "$TEST_ENABLED" == "false" ]; then \
+    echo "skipping tests";\
+    else \
+    eval "$TEST_COMMAND"; \
+    fi
+
 USER app
 
 ENV fprocess="python index.py"
