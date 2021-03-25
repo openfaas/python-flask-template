@@ -149,7 +149,7 @@ The function handler is passed two arguments, *event* and *context*.
 
 ## Response Bodies
 
-By default, the template will automatically attempt to set the correct Content-Type header for you based on the type of response. 
+By default, the template will automatically attempt to set the correct Content-Type header for you based on the type of response.
 
 For example, returning a dict object type will automatically attach the header `Content-Type: application/json` and returning a string type will automatically attach the `Content-Type: text/html, charset=utf-8` for you.
 
@@ -196,7 +196,7 @@ def handle(event, context):
         },
         "headers": {
             "Location": "https://www.example.com/"
-        }   
+        }
     }
 ```
 ### Accessing Event Data
@@ -242,3 +242,29 @@ def handle(event, context):
         }
     }
 ```
+
+
+## Testing
+The `python3` templates will run `pytest` using `tox` during the `faas-cli build`. There are several options for controlling this.
+
+### Disabling testing
+The template exposes the build arg `TEST_ENABLED`. You can completely disable testing during build by passing the following flag to the CLI
+
+```sh
+--build-arg 'TEST_ENABLED=false'
+```
+
+You can also set it permanently in your stack.yaml, see the [YAML reference in the docs](https://docs.openfaas.com/reference/yaml/#function-build-args-build-args).
+
+### Changing the test configuration
+The template creates a default `tox.ini` file, modifying this file can completely control what happens during the test. You can change the test command, for example switching to `nose`. See the [tox docs](https://tox.readthedocs.io/en/latest/index.html) for more details and examples.
+
+### Changing the test command
+If you don't want to use `tox` at all, you can also change the test command that is used. The template exposes the build arg `TEST_COMMAND`. You can override the test command during build by passing the following flag to the CLI
+
+```sh
+--build-arg 'TEST_COMMAND=bash test.sh'
+```
+Setting the command to any other executable in the image or any scripts you have in your function.
+
+You can also set it permanently in your stack.yaml, see the [YAML reference in the docs](https://docs.openfaas.com/reference/yaml/#function-build-args-build-args).
