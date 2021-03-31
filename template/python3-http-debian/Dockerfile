@@ -37,7 +37,7 @@ USER root
 COPY function   function
 RUN chown -R app:app ./
 
-ARG TEST_COMMAND=tox
+ARG TEST_COMMAND="tox -c function/tox.ini"
 ARG TEST_ENABLED=true
 RUN if [ "$TEST_ENABLED" == "false" ]; then \
     echo "skipping tests";\
