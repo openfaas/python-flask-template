@@ -33,12 +33,10 @@ WORKDIR /home/app/function/
 COPY function/requirements.txt	.
 RUN pip install --user -r requirements.txt
 
-WORKDIR /home/app/
-
 #install function code
 USER root
-COPY function   function
-RUN chown -R app:app ./
+COPY function/   .
+RUN chown -R app:app ../
 
 ARG TEST_COMMAND=tox
 ARG TEST_ENABLED=true
@@ -47,6 +45,8 @@ RUN if [ "$TEST_ENABLED" == "false" ]; then \
     else \
     eval "$TEST_COMMAND"; \
     fi
+
+WORKDIR /home/app/
 
 #configure WSGI server and healthcheck
 USER app
