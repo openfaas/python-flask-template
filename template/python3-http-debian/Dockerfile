@@ -1,4 +1,4 @@
-FROM openfaas/of-watchdog:0.7.7 as watchdog
+FROM ghcr.io/openfaas/of-watchdog:0.9.3 as watchdog
 FROM python:3.7-slim-buster
 
 COPY --from=watchdog /fwatchdog /usr/bin/fwatchdog
