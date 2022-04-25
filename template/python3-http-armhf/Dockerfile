@@ -34,11 +34,7 @@ RUN chown -R app:app ../
 
 ARG TEST_COMMAND=tox
 ARG TEST_ENABLED=true
-RUN if [ "$TEST_ENABLED" == "false" ]; then \
-    echo "skipping tests";\
-    else \
-    eval "$TEST_COMMAND"; \
-    fi
+RUN [ "$TEST_ENABLED" = "false" ] && echo "skipping tests" || eval "$TEST_COMMAND"
 
 WORKDIR /home/app/
 
