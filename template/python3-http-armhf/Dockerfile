@@ -1,4 +1,4 @@
-FROM ghcr.io/openfaas/of-watchdog:0.9.3 as watchdog
+FROM ghcr.io/openfaas/of-watchdog:0.9.6 as watchdog
 FROM armhf/python:3.6-alpine
 
 ARG ADDITIONAL_PACKAGE
