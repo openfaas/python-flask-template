@@ -1,5 +1,5 @@
 FROM ghcr.io/openfaas/of-watchdog:0.9.3 as watchdog
-FROM python:2.7-alpine
+FROM python:2.7-alpine as builder
 
 COPY --from=watchdog /fwatchdog /usr/bin/fwatchdog
 RUN chmod +x /usr/bin/fwatchdog
@@ -21,20 +21,22 @@ WORKDIR /home/app/
 COPY --chown=app:app index.py           .
 COPY --chown=app:app requirements.txt   .
 USER root
-RUN pip install -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 USER app
 
 RUN mkdir -p function
 RUN touch ./function/__init__.py
 WORKDIR /home/app/function/
 COPY --chown=app:app function/requirements.txt	.
-RUN pip install --user -r requirements.txt
+RUN pip install --no-cache-dir --user -r requirements.txt
 
 WORKDIR /home/app/
 
 USER root
 COPY --chown=app:app function   function
 USER app
+
+FROM builder as final
 
 ENV fprocess="python index.py"
 ENV cgi_headers="true"

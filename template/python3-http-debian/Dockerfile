@@ -7,7 +7,9 @@ RUN chmod +x /usr/bin/fwatchdog
 ARG ADDITIONAL_PACKAGE
 # Alternatively use ADD https:// (which will not be cached by Docker builder)
 
-RUN apt-get -qy update && apt-get -qy install ${ADDITIONAL_PACKAGE}
+RUN apt-get -qy update \
+    && apt-get -qy install ${ADDITIONAL_PACKAGE} \
+    && rm -rf /var/lib/apt/lists/*
 
 # Add non root user
 RUN addgroup --system app && adduser app --system --ingroup app
@@ -22,22 +24,26 @@ WORKDIR /home/app/
 COPY --chown=app:app index.py           .
 COPY --chown=app:app requirements.txt   .
 USER root
-RUN pip install -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 USER app
 
 RUN mkdir -p function
 RUN touch ./function/__init__.py
 WORKDIR /home/app/function/
 COPY --chown=app:app function/requirements.txt	.
-RUN pip install --user -r requirements.txt
+RUN pip install --no-cache-dir --user -r requirements.txt
 
 USER root
 COPY --chown=app:app function/   .
+
+FROM builder as tester
 
 ARG TEST_COMMAND=tox
 ARG TEST_ENABLED=true
 RUN [ "$TEST_ENABLED" = "false" ] && echo "skipping tests" || eval "$TEST_COMMAND"
 
+
+FROM builder as final
 WORKDIR /home/app/
 
 USER app
