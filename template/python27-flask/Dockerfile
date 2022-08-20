@@ -18,8 +18,8 @@ ENV PATH=$PATH:/home/app/.local/bin
 
 WORKDIR /home/app/
 
-COPY index.py           .
-COPY requirements.txt   .
+COPY --chown=app:app index.py           .
+COPY --chown=app:app requirements.txt   .
 USER root
 RUN pip install -r requirements.txt
 USER app
@@ -27,14 +27,13 @@ USER app
 RUN mkdir -p function
 RUN touch ./function/__init__.py
 WORKDIR /home/app/function/
-COPY function/requirements.txt	.
+COPY --chown=app:app function/requirements.txt	.
 RUN pip install --user -r requirements.txt
 
 WORKDIR /home/app/
 
 USER root
-COPY function   function
-RUN chown -R app:app ./
+COPY --chown=app:app function   function
 USER app
 
 ENV fprocess="python index.py"
