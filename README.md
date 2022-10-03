@@ -29,86 +29,28 @@ Are you referencing pip modules which require a native build toolchain? It's adv
 
 ## Downloading the templates
 
-Using template pull:
+Using template pull with the repository's URL:
 
 ```bash
-faas template pull https://github.com/openfaas-incubator/python-flask-template
+faas-cli template pull https://github.com/openfaas-incubator/python-flask-template
 ```
 
-Using template store:
+Using the template store:
 
 ```bash
-faas template store pull python3-flask
+# Either command downloads both templates
+faas-cli template store pull python3-http
+
+# Or
+faas-cli template store pull python3-flask
 ```
 
-# Using the python3-flask template
-
-Create a new function
-
-```
-export OPENFAAS_PREFIX=alexellis2
-export FN="tester"
-faas new --lang python3-flask $FN
-```
-
-Build, push, and deploy
-
-```
-faas up -f $FN.yml
-```
-
-Test the new function
-
-```
-echo -n content | faas invoke $FN
-```
-
-## Example of returning a string
-
-```python
-def handle(req):
-    """handle a request to the function
-    Args:
-        req (str): request body
-    """
-
-    return "Hi" + str(req)
-```
-
-## Example of returning a custom HTTP code
-
-```python
-def handle(req):
-    return "request accepted", 201
-```
-
-## Example of returning a custom HTTP code and content-type
-
-```python
-def handle(req):
-    return "request accepted", 201, {"Content-Type":"binary/octet-stream"}
-```
-
-## Example of accepting raw bytes in the request
-
-Update stack.yml:
+Using your `stack.yml` file:
 
 ```yaml
-    environment:
-      RAW_BODY: True
-```
-
-> Note: the value for `RAW_BODY` is case-sensitive.
-
-```python
-def handle(req):
-    """handle a request to the function
-    Args:
-        req (str): request body
-    """
-
-    # req is bytes, so an input of "hello" returns i.e. b'hello'
-    return str(req)
+configuration:
+    templates:
+        - name: python3-http
 ```
 
 # Using the python3-http templates
@@ -118,19 +60,19 @@ Create a new function
 ```
 export OPENFAAS_PREFIX=alexellis2
 export FN="tester"
-faas new --lang python3-http $FN
+faas-cli new --lang python3-http $FN
 ```
 
 Build, push, and deploy
 
 ```
-faas up -f $FN.yml
+faas-cli up -f $FN.yml
 ```
 
 Test the new function
 
 ```
-echo -n content | faas invoke $FN
+echo -n content | faas-cli invoke $FN
 ```
 
 ## Event and Context Data
@@ -154,6 +96,19 @@ By default, the template will automatically attempt to set the correct Content-T
 For example, returning a dict object type will automatically attach the header `Content-Type: application/json` and returning a string type will automatically attach the `Content-Type: text/html, charset=utf-8` for you.
 
 ## Example usage
+
+### Return a JSON body with a Content-Type
+
+```python
+def handle(event, context):
+    return {
+        "statusCode": 200,
+        "body": {"message": "Hello from OpenFaaS!"},
+        "headers": {
+            "Content-Type": "application/json"
+        }
+    }
+```
 
 ### Custom status codes and response bodies
 
@@ -241,6 +196,76 @@ def handle(event, context):
             "content-type-received": event.headers.get('Content-Type')
         }
     }
+```
+
+# Using the python3-flask template
+
+Create a new function
+
+```
+export OPENFAAS_PREFIX=alexellis2
+export FN="tester"
+faas-cli new --lang python3-flask $FN
+```
+
+Build, push, and deploy
+
+```
+faas-cli up -f $FN.yml
+```
+
+Test the new function
+
+```
+echo -n content | faas-cli invoke $FN
+```
+
+## Example of returning a string
+
+```python
+def handle(req):
+    """handle a request to the function
+    Args:
+        req (str): request body
+    """
+
+    return "Hi" + str(req)
+```
+
+## Example of returning a custom HTTP code
+
+```python
+def handle(req):
+    return "request accepted", 201
+```
+
+## Example of returning a custom HTTP code and content-type
+
+```python
+def handle(req):
+    return "request accepted", 201, {"Content-Type":"binary/octet-stream"}
+```
+
+## Example of accepting raw bytes in the request
+
+Update stack.yml:
+
+```yaml
+    environment:
+      RAW_BODY: True
+```
+
+> Note: the value for `RAW_BODY` is case-sensitive.
+
+```python
+def handle(req):
+    """handle a request to the function
+    Args:
+        req (str): request body
+    """
+
+    # req is bytes, so an input of "hello" returns i.e. b'hello'
+    return str(req)
 ```
 
 

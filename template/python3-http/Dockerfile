@@ -33,7 +33,7 @@ WORKDIR /home/app/function/
 COPY function/requirements.txt	.
 RUN pip install --user -r requirements.txt
 
-#install function code
+# install function code
 USER root
 COPY function/   .
 RUN chown -R app:app ../
@@ -44,7 +44,7 @@ RUN [ "$TEST_ENABLED" = "false" ] && echo "skipping tests" || eval "$TEST_COMMAN
 
 WORKDIR /home/app/
 
-#configure WSGI server and healthcheck
+# configure WSGI server and healthcheck
 USER app
 
 ENV fprocess="python index.py"
