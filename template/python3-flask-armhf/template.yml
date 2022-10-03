@@ -1,2 +1,0 @@
-language: python3-flask-armhf
-fprocess: python index.py

@@ -5,17 +5,16 @@ The Python Flask templates that make use of the incubator project [of-watchdog](
 
 Templates available in this repository:
 
-- python27-flask
-- python3-flask
-- python3-flask-debian
-- python3-flask-armhf
-
 - python3-http
-- python3-http-debian
-- python3-http-armhf
+- python3-http-debian (ideal for compiled dependencies like numpy, pandas, pillow)
+
+- python3-flask
+- python3-flask-debian (ideal for compiled dependencies like numpy, pandas, pillow)
+
+- python27-flask (Python 2.7 is deprecated)
 
 Notes:
-- To build and deploy a function for Raspberry Pi or ARMv7 in general, use the language templates ending in *-armhf*
+- To build and deploy a function for an ARM computer, you'll need to use `faas-cli publish --platforms`
 
 ## Picking your template
 

@@ -1,5 +1,5 @@
-FROM ghcr.io/openfaas/of-watchdog:0.9.6 as watchdog
-FROM python:3.7-slim-buster
+FROM --platform=${TARGETPLATFORM:-linux/amd64} ghcr.io/openfaas/of-watchdog:0.9.6 as watchdog
+FROM --platform=${TARGETPLATFORM:-linux/amd64} python:3.7-slim-buster
 
 COPY --from=watchdog /fwatchdog /usr/bin/fwatchdog
 RUN chmod +x /usr/bin/fwatchdog
