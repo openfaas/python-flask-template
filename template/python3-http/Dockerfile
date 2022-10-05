@@ -1,5 +1,5 @@
 FROM --platform=${TARGETPLATFORM:-linux/amd64} ghcr.io/openfaas/of-watchdog:0.9.8 as watchdog
-FROM --platform=${TARGETPLATFORM:-linux/amd64} python:3.7-alpine as builder
+FROM --platform=${TARGETPLATFORM:-linux/amd64} python:3.7-alpine as build
 
 COPY --from=watchdog /fwatchdog /usr/bin/fwatchdog
 RUN chmod +x /usr/bin/fwatchdog
@@ -37,12 +37,12 @@ RUN pip install --no-cache-dir --user -r requirements.txt
 USER root
 COPY --chown=app:app function/   .
 
-FROM builder as tester
+FROM build as test
 ARG TEST_COMMAND=tox
 ARG TEST_ENABLED=true
 RUN [ "$TEST_ENABLED" = "false" ] && echo "skipping tests" || eval "$TEST_COMMAND"
 
-FROM builder as final
+FROM build as ship
 WORKDIR /home/app/
 
 # configure WSGI server and healthcheck
