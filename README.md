@@ -16,6 +16,12 @@ Templates available in this repository:
 Notes:
 - To build and deploy a function for an ARM computer, you'll need to use `faas-cli publish --platforms`
 
+## SSH authentication for private Git repositories and Pip modules
+
+If you need to install Pip modules from private Git repositories, we provide an alternative set of templates for OpenFaaS Pro customers:
+
+* [OpenFaaS Pro templates for Python](https://github.com/openfaas/pro-templates)
+
 ## Picking your template
 
 The templates named `python*-flask*` are designed as a drop-in replacement for the classic `python3` template, but using the more efficient of-watchdog. The move to use flask as an underlying framework allows for greater control over the HTTP request and response.
