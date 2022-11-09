@@ -203,6 +203,81 @@ def handle(event, context):
     }
 ```
 
+### Example with Postgresql:
+
+stack.yml
+
+```yaml
+version: 1.0
+provider:
+  name: openfaas
+  gateway: http://127.0.0.1:8080
+functions:
+  pgfn:
+    lang: python3-http-debian
+    handler: ./pgfn
+    image: pgfn:latest
+    build_options:
+      - libpq
+```
+
+Alternatively you can specify `ADDITIONAL_PACKAGE` in the `build_args` section for the function.
+
+```yaml
+    build_args:
+      ADDITIONAL_PACKAGE: "libpq-dev gcc python3-dev"
+```
+
+requirements.txt
+
+```
+psycopg2==2.9.3
+```
+
+Create a database and table:
+
+```sql
+CREATE DATABASE main;
+
+\c main;
+
+CREATE TABLE users (
+    name TEXT,
+);
+
+-- Insert the original Postgresql author's name into the test table:
+
+INSERT INTO users (name) VALUES ('Michael Stonebraker');
+```
+
+handler.py:
+
+```python
+import psycopg2
+
+def handle(event, context):
+
+    try:
+        conn = psycopg2.connect("dbname='main' user='postgres' port=5432 host='192.168.1.35' password='passwd'")
+    except Exception as e:
+        print("DB error {}".format(e))
+        return {
+            "statusCode": 500,
+            "body": e
+        }
+
+    cur = conn.cursor()
+    cur.execute("""SELECT * from users;""")
+    rows = cur.fetchall()
+
+    return {
+        "statusCode": 200,
+        "body": rows
+    }
+```
+
+Always read the secret from an OpenFaaS secret at `/var/openfaas/secrets/secret-name`. The use of environment variables is an anti-pattern and will be visible via the OpenFaaS API.
+
 # Using the python3-flask template
 
 Create a new function
