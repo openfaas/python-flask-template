@@ -1,2 +1,8 @@
 language: python3-http-debian
 fprocess: python index.py
+build_options:
+  - name: libpq
+    packages: 
+      - libpq-dev
+      - gcc
+      - python3-dev
