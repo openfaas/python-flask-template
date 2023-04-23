@@ -32,6 +32,38 @@ The `witness` HTTP server is used along with Flask for all templates.
 
 Are you referencing pip modules which require a native build toolchain? It's advisable to use the template with a `-debian` suffix in this case. The Debian images are larger, however they are usually more efficient for use with modules like `numpy` and `pandas`.
 
+## Python Versioning
+We try to keep the default Python 3 version up-to-date, however, you can specify a specific python version using the `PYTHON_VERSION` build argument.
+
+The current stable version of python is 3.11, you might want to test the next pre-release using
+
+```yaml
+functions:
+  pgfn:
+    lang: python3-http-debian
+    handler: ./pgfn
+    image: pgfn:latest
+    build_args:
+      - PYTHON_VERSION=3.12
+```
+Or pin to a older version while you wait for your dependencies to be updated.
+
+```yaml
+functions:
+  pgfn:
+    lang: python3-http-debian
+    handler: ./pgfn
+    image: pgfn:latest
+    build_args:
+      - PYTHON_VERSION=3.10
+```
+
+This can also be set using the `--build-arg` flag.
+
+```bash
+faas-cli build --build-arg PYTHON_VERSION=3.12
+```
+
 ## Downloading the templates
 
 Using template pull with the repository's URL:
