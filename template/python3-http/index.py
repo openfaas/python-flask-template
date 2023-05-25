@@ -2,10 +2,19 @@
 from flask import Flask, request, jsonify
 from waitress import serve
 import os
+import sys
+
+import signal
 
 from function import handler
 
 app = Flask(__name__)
+
+def SignalHandler(SignalNumber, Frame):
+    timeout = os.getenv("write_timeout")
+
+    sys.stderr.write('Function got SIGTERM, draining for up to: {}\n'.format(timeout))
+    sys.stderr.flush()
 
 class Event:
     def __init__(self):
@@ -66,4 +75,7 @@ def call_handler(path):
     return resp
 
 if __name__ == '__main__':
+
+    signal.signal(signal.SIGTERM, SignalHandler)
+
     serve(app, host='0.0.0.0', port=5000)
