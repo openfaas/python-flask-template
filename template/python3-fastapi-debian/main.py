@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 from fastapi import FastAPI, Request
+import json
 
 app = FastAPI()
 
@@ -32,7 +33,7 @@ def format_body(res, content_type):
     if 'body' not in res:
         return ""
     elif type(res['body']) == dict:
-        return jsonify(res['body'])
+        return json.dumps(res['body'])
     else:
         return str(res['body'])
 
