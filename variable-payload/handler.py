@@ -11,7 +11,7 @@ def handle(event, context):
 
     ret_val = ""
     # Generate a random number for ASCII between A and Z
-    for i in range(0, 1024*1024):
+    for i in range(0, 1024*1024*payload_size_mb):
         random_ch = random.randint(65, 90)
         ret_val += chr(random_ch)
 
