@@ -48,12 +48,15 @@ def format_headers(resp):
 def format_response(resp):
     if resp == None:
         return ('', 200)
+    
+    if type(resp) is dict:
+        statusCode = format_status_code(resp)
+        body = format_body(resp)
+        headers = format_headers(resp)
 
-    statusCode = format_status_code(resp)
-    body = format_body(resp)
-    headers = format_headers(resp)
+        return (body, statusCode, headers)
 
-    return (body, statusCode, headers)
+    return resp
 
 @app.route('/', defaults={'path': ''}, methods=['GET', 'PUT', 'POST', 'PATCH', 'DELETE'])
 @app.route('/<path:path>', methods=['GET', 'PUT', 'POST', 'PATCH', 'DELETE'])
