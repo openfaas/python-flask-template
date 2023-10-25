@@ -57,14 +57,17 @@ def get_content_type(res):
 def format_response(res):
     if res == None:
         return ('', 200)
+    
+    if type(resp) is dict:
+        statusCode = format_status_code(res)
+        content_type = get_content_type(res)
+        body = format_body(res, content_type)
 
-    statusCode = format_status_code(res)
-    content_type = get_content_type(res)
-    body = format_body(res, content_type)
+        headers = format_headers(res)
 
-    headers = format_headers(res)
+        return (body, statusCode, headers)
 
-    return (body, statusCode, headers)
+    return res
 
 @app.route('/', defaults={'path': ''}, methods=['GET', 'PUT', 'POST', 'PATCH', 'DELETE'])
 @app.route('/<path:path>', methods=['GET', 'PUT', 'POST', 'PATCH', 'DELETE'])
