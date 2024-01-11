@@ -58,7 +58,7 @@ def format_response(res):
     if res == None:
         return ('', 200)
     
-    if type(resp) is dict:
+    if type(res) is dict:
         statusCode = format_status_code(res)
         content_type = get_content_type(res)
         body = format_body(res, content_type)
