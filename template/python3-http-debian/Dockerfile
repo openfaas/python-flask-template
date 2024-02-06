@@ -44,7 +44,7 @@ ARG TEST_ENABLED=true
 RUN [ "$TEST_ENABLED" = "false" ] && echo "skipping tests" || eval "$TEST_COMMAND"
 
 
-FROM build as ship
+FROM test as ship
 WORKDIR /home/app/
 
 USER app
