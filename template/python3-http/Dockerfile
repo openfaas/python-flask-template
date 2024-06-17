@@ -1,5 +1,5 @@
 ARG PYTHON_VERSION=3.11
-FROM --platform=${TARGETPLATFORM:-linux/amd64} ghcr.io/openfaas/of-watchdog:0.9.15 as watchdog
+FROM --platform=${TARGETPLATFORM:-linux/amd64} ghcr.io/openfaas/of-watchdog:0.10.1 as watchdog
 FROM --platform=${TARGETPLATFORM:-linux/amd64} python:${PYTHON_VERSION}-alpine as build
 
 COPY --from=watchdog /fwatchdog /usr/bin/fwatchdog
