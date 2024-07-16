@@ -1,6 +1,7 @@
 ARG PYTHON_VERSION=3.12
+ARG DEBIAN_OS=slim-bookworm
 FROM --platform=${TARGETPLATFORM:-linux/amd64} ghcr.io/openfaas/of-watchdog:0.10.4 AS watchdog
-FROM --platform=${TARGETPLATFORM:-linux/amd64} python:${PYTHON_VERSION}-slim-buster AS build
+FROM --platform=${TARGETPLATFORM:-linux/amd64} python:${PYTHON_VERSION}-${DEBIAN_OS} AS build
 
 COPY --from=watchdog /fwatchdog /usr/bin/fwatchdog
 RUN chmod +x /usr/bin/fwatchdog
@@ -14,7 +15,7 @@ RUN apt-get -qy update \
 
 # Add non root user
 RUN addgroup --system app && adduser app --system --ingroup app
-RUN chown app /home/app
+RUN mkdir -p /home/app && chown app /home/app
 
 USER app
 

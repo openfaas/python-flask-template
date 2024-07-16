@@ -33,6 +33,7 @@ The `witness` HTTP server is used along with Flask for all templates.
 Are you referencing pip modules which require a native build toolchain? It's advisable to use the template with a `-debian` suffix in this case. The Debian images are larger, however they are usually more efficient for use with modules like `numpy` and `pandas`.
 
 ## Python Versioning
+
 We try to keep the default Python 3 version up-to-date, however, you can specify a specific python version using the `PYTHON_VERSION` build argument.
 
 The current stable version of Python is 3.12, you might want to test the next pre-release using:
@@ -63,6 +64,8 @@ This can also be set using the `--build-arg` flag.
 ```bash
 faas-cli build --build-arg PYTHON_VERSION=3.12
 ```
+
+For the `-debian` templates, the `DEBIAN_OS` build_args is also available to specify the Debian version. The default is currently `bookworm`.
 
 ## Downloading the templates
 
