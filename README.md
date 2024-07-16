@@ -35,7 +35,7 @@ Are you referencing pip modules which require a native build toolchain? It's adv
 ## Python Versioning
 We try to keep the default Python 3 version up-to-date, however, you can specify a specific python version using the `PYTHON_VERSION` build argument.
 
-The current stable version of python is 3.11, you might want to test the next pre-release using
+The current stable version of Python is 3.12, you might want to test the next pre-release using:
 
 ```yaml
 functions:

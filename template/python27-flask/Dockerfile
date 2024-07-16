@@ -1,5 +1,5 @@
-FROM ghcr.io/openfaas/of-watchdog:0.10.1 as watchdog
-FROM python:2.7-alpine as build
+FROM ghcr.io/openfaas/of-watchdog:0.10.4 AS watchdog
+FROM python:2.7-alpine AS build
 
 COPY --from=watchdog /fwatchdog /usr/bin/fwatchdog
 RUN chmod +x /usr/bin/fwatchdog
@@ -36,7 +36,7 @@ USER root
 COPY --chown=app:app function   function
 USER app
 
-FROM build as ship
+FROM build AS ship
 
 ENV fprocess="python index.py"
 ENV cgi_headers="true"

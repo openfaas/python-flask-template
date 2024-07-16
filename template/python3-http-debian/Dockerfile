@@ -1,6 +1,6 @@
-ARG PYTHON_VERSION=3.11
-FROM --platform=${TARGETPLATFORM:-linux/amd64} ghcr.io/openfaas/of-watchdog:0.10.1 as watchdog
-FROM --platform=${TARGETPLATFORM:-linux/amd64} python:${PYTHON_VERSION}-slim-buster as build
+ARG PYTHON_VERSION=3.12
+FROM --platform=${TARGETPLATFORM:-linux/amd64} ghcr.io/openfaas/of-watchdog:0.10.4 AS watchdog
+FROM --platform=${TARGETPLATFORM:-linux/amd64} python:${PYTHON_VERSION}-slim-buster AS build
 
 COPY --from=watchdog /fwatchdog /usr/bin/fwatchdog
 RUN chmod +x /usr/bin/fwatchdog
@@ -37,14 +37,14 @@ RUN pip install --no-cache-dir --user -r requirements.txt
 USER root
 COPY --chown=app:app function/   .
 
-FROM build as test
+FROM build AS test
 
 ARG TEST_COMMAND=tox
 ARG TEST_ENABLED=true
 RUN [ "$TEST_ENABLED" = "false" ] && echo "skipping tests" || eval "$TEST_COMMAND"
 
 
-FROM build as ship
+FROM build AS ship
 WORKDIR /home/app/
 
 USER app
