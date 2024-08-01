@@ -14,8 +14,9 @@ RUN apt-get -qy update \
     && rm -rf /var/lib/apt/lists/*
 
 # Add non root user
-RUN addgroup --system app && adduser app --system --ingroup app
-RUN mkdir -p /home/app && chown app /home/app
+RUN addgroup --system app \
+    && adduser app --system --ingroup app --home /home/app \
+    && chown app:app /home/app
 
 USER app
 
