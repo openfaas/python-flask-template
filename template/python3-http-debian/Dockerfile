@@ -1,5 +1,7 @@
 ARG PYTHON_VERSION=3.12
 ARG DEBIAN_OS=slim-bookworm
+
+
 FROM --platform=${TARGETPLATFORM:-linux/amd64} ghcr.io/openfaas/of-watchdog:0.10.4 AS watchdog
 FROM --platform=${TARGETPLATFORM:-linux/amd64} python:${PYTHON_VERSION}-${DEBIAN_OS} AS build
 
@@ -8,9 +10,11 @@ RUN chmod +x /usr/bin/fwatchdog
 
 ARG ADDITIONAL_PACKAGE
 # Alternatively use ADD https:// (which will not be cached by Docker builder)
+ARG UPGRADE_PACKAGES=false
 
-RUN apt-get -qy update \
-    && apt-get -qy install ${ADDITIONAL_PACKAGE} \
+RUN apt-get update -qy \
+    && if [ "${UPGRADE_PACKAGES}" = "true" ] || [ "${UPGRADE_PACKAGES}" = "1" ]; then apt-get upgrade -qy; fi \
+    && apt-get install -qy --no-install-recommends gcc make ${ADDITIONAL_PACKAGE} \
     && rm -rf /var/lib/apt/lists/*
 
 # Add non root user
