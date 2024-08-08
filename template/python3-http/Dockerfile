@@ -5,10 +5,12 @@ FROM --platform=${TARGETPLATFORM:-linux/amd64} python:${PYTHON_VERSION}-alpine A
 COPY --from=watchdog /fwatchdog /usr/bin/fwatchdog
 RUN chmod +x /usr/bin/fwatchdog
 
+ARG UPGRADE_PACKAGES
 ARG ADDITIONAL_PACKAGE
 # Alternatively use ADD https:// (which will not be cached by Docker builder)
 
-RUN apk --no-cache add ${ADDITIONAL_PACKAGE}
+RUN if [ "${UPGRADE_PACKAGES}" = "true" ] || [ "${UPGRADE_PACKAGES}" = "1" ]; then apk --no-cache upgrade; fi && \
+    apk --no-cache add ${ADDITIONAL_PACKAGE}
 
 # Add non root user
 RUN addgroup -S app && adduser app -S -G app
