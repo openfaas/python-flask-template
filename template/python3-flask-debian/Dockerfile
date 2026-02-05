@@ -2,7 +2,7 @@ ARG PYTHON_VERSION=3.12
 ARG DEBIAN_OS=slim-bookworm
 ARG UPGRADE_PACKAGES=false
 
-FROM --platform=${TARGETPLATFORM:-linux/amd64} ghcr.io/openfaas/of-watchdog:0.10.11 AS watchdog
+FROM --platform=${TARGETPLATFORM:-linux/amd64} ghcr.io/openfaas/of-watchdog:0.11.22 AS watchdog
 FROM --platform=${TARGETPLATFORM:-linux/amd64} python:${PYTHON_VERSION}-${DEBIAN_OS} AS build
 
 COPY --from=watchdog /fwatchdog /usr/bin/fwatchdog
