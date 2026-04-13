@@ -41,9 +41,8 @@ RUN pip install --no-cache-dir --user -r requirements.txt
 USER root
 COPY --chown=app:app function/   .
 
-FROM build AS test
 ARG TEST_COMMAND=tox
-ARG TEST_ENABLED=true
+ARG TEST_ENABLED=false
 RUN [ "$TEST_ENABLED" = "false" ] && echo "skipping tests" || eval "$TEST_COMMAND"
 
 FROM build AS ship

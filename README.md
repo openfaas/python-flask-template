@@ -385,16 +385,26 @@ def handle(req):
 
 
 ## Testing
-The `python3` templates will run `pytest` using `tox` during the `faas-cli build`. There are several options for controlling this.
+The `python3` templates support running `pytest` using `tox` during `faas-cli build`. Testing is disabled by default and must be explicitly enabled.
 
-### Disabling testing
-The template exposes the build arg `TEST_ENABLED`. You can completely disable testing during build by passing the following flag to the CLI
+### Enabling testing
+The template exposes the build arg `TEST_ENABLED`. You can enable testing during build by passing the following flag to the CLI
 
 ```sh
---build-arg 'TEST_ENABLED=false'
+--build-arg 'TEST_ENABLED=true'
 ```
 
 You can also set it permanently in your stack.yaml, see the [YAML reference in the docs](https://docs.openfaas.com/reference/yaml/#function-build-args-build-args).
+
+```yaml
+functions:
+  fn:
+    lang: python3-http
+    handler: ./fn
+    image: fn:latest
+    build_args:
+      TEST_ENABLED: "true"
+```
 
 ### Changing the test configuration
 The template creates a default `tox.ini` file, modifying this file can completely control what happens during the test. You can change the test command, for example switching to `nose`. See the [tox docs](https://tox.readthedocs.io/en/latest/index.html) for more details and examples.
