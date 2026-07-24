@@ -1,3 +1,12 @@
+import site
+
+# The function's own dependencies are installed to a fixed path rather than
+# a $HOME-derived one, so that they are still found when the platform runs
+# the container as an arbitrary uid. Register it as a site directory rather
+# than relying on PYTHONPATH alone, so that any .pth files shipped by those
+# dependencies are processed as they would be in site-packages.
+site.addsitedir("/home/app/python")
+
 # Copyright (c) Alex Ellis 2017. All rights reserved.
 # Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
