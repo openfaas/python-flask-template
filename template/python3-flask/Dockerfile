@@ -20,7 +20,8 @@ RUN chown app /home/app
 
 USER app
 
-ENV PATH=$PATH:/home/app/.local/bin
+ENV PATH=$PATH:/home/app/python/bin
+ENV PYTHONPATH=/home/app/python
 
 WORKDIR /home/app/
 
@@ -37,7 +38,7 @@ RUN mkdir -p function
 RUN touch ./function/__init__.py
 WORKDIR /home/app/function/
 COPY --chown=app:app function/requirements.txt	.
-RUN pip install --no-cache-dir --user -r requirements.txt
+RUN pip install --no-cache-dir --target=/home/app/python -r requirements.txt
 
 #install function code
 USER root
